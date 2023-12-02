@@ -2,31 +2,36 @@
 pragma solidity 0.8.19;
 
 import { Test } from "forge-std/Test.sol";
-import { IVaultFactory } from "../../src/vault-factory/IVaultFactory.sol";
+import { IVaultFactory } from "../interfaces/IVaultFactory.sol";
 import { IValueEvaluator } from "../interfaces/IValueEvaluator.sol";
 import { IDeployment } from "../interfaces/IDeployment.sol";
 
 
-abstract contract Deployment is Test {
+abstract contract DeploymentUtil is Test {
 
     function deployRelease(
         address weth,
         address ethUsdAggregator,
-        uint256 chainlinkStaleRateThreshold
+        uint256 chainlinkStaleRateThreshold,
+        bool active
     ) internal returns (IDeployment.VaultFactoryConf memory conf) {
         address vaultFactoryAddress = deployVaultFactory();
         address vauleEvaluatorAddress = deployVauleEvaluator(vaultFactoryAddress, weth, chainlinkStaleRateThreshold);
         address integrationManagerAddress = deployIntegrationManager(vaultFactoryAddress, vauleEvaluatorAddress);
         address globalSharedAddress = deployGlobalShared(vaultFactoryAddress, integrationManagerAddress, vauleEvaluatorAddress, weth);
         IVaultFactory(vaultFactoryAddress).setGlobalShared(globalSharedAddress);
-        IVaultFactory(vaultFactoryAddress).activate();
+        if (active) {
+            IVaultFactory(vaultFactoryAddress).activate();
+        }
         IValueEvaluator(vauleEvaluatorAddress).setEthUsdAggregator(ethUsdAggregator);
         conf = IDeployment.VaultFactoryConf({
             weth: weth,
             globalShared: globalSharedAddress,
             ethUsdAggregator: ethUsdAggregator,
             chainlinkStaleRateThreshold: chainlinkStaleRateThreshold,
-            active: true
+            active: active,
+            vaultFactory: IVaultFactory(vaultFactoryAddress),
+            vauleEvaluator: IValueEvaluator(vauleEvaluatorAddress)
         });
         return conf;
     }

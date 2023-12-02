@@ -8,9 +8,10 @@ import { console } from "forge-std/console.sol";
 import { IWETH } from "../src/external-interfaces/IWETH.sol";
 import { IERC20 } from "openzeppelin/token/ERC20/IERC20.sol";
 import { IUniswapV2Router2 } from "../src/external-interfaces/IUniswapV2Router2.sol";
+import { MockV3Aggregator } from "chainlink-mock/src/MockV3Aggregator.sol";
 
 // uniswap v2 router 02 address
-address constant UNISWAP_V2_ROUTER_02 = 0xB1C4C22FeE13DA89E8D983227d9dc6314E29894a;
+address constant UNISWAP_V2_ROUTER_02 = 0xC0FcE24e33DB355e21d63eb91Fd35D8F65D0A1DE;
 
 contract EnvironmentDeploy is Script {
 
@@ -33,6 +34,18 @@ contract EnvironmentDeploy is Script {
         console.log("erc20WSOLAddress",erc20WSOLAddress);
         address erc20DAIAddress = deployERC20("dai", "DAI");
         console.log("erc20DAIAddress",erc20DAIAddress);
+        // 部署对应的chainlink mock
+        address btcUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 38000 * 10**8));
+        console.log("btcUsdAggregatorAddress",btcUsdAggregatorAddress);
+        address ethUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 3000 * 10**8));
+        console.log("ethUsdAggregatorAddress",ethUsdAggregatorAddress);
+        address solEthAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 60 * 10**8));
+        console.log("solEthAggregatorAddress",solEthAggregatorAddress);
+        address daiUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 1 * 10**8));
+        console.log("daiUsdAggregatorAddress",daiUsdAggregatorAddress);
+        // 部署源生token的chainlink mock
+         address wNativeTokenUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 100 * 10**8));
+         console.log("wNativeTokenUsdAggregatorAddress",wNativeTokenUsdAggregatorAddress);
         // carete pair
         IUniswapV2Router2 uniswapV2Router2 = IUniswapV2Router2(UNISWAP_V2_ROUTER_02);
         uint256 erc20WBTCAddressAmount = 1000000000000000000 * 1000;
@@ -54,7 +67,7 @@ contract EnvironmentDeploy is Script {
      function deployUniswapV2Pool(address router02, address _tokenA, address _tokenB, uint256 _tokenAAmount, uint256 _tokenBAmount) public {
         IERC20(_tokenA).approve(router02, _tokenAAmount);
         IERC20(_tokenB).approve(router02, _tokenBAmount);
-        (,,uint lp) = IUniswapV2Router2(router02).addLiquidity(_tokenA, _tokenB, _tokenAAmount, _tokenBAmount, _tokenAAmount, _tokenBAmount, deployerAddress, block.timestamp + 60);
+        (,,uint lp) = IUniswapV2Router2(router02).addLiquidity(_tokenA, _tokenB, _tokenAAmount, _tokenBAmount, _tokenAAmount, _tokenBAmount, deployerAddress, block.timestamp + 600);
         console.log("lp amount",lp);
      }
 }

@@ -2,11 +2,11 @@
 pragma solidity 0.8.19;
 
 import { IDeployment } from "../interfaces/IDeployment.sol";
-import { Deployment } from "./Deployment.sol";
+import { DeploymentUtil } from "./DeploymentUtil.sol";
 import { Constants } from "./Constants.sol";
 
 
-contract Environment is Deployment, Constants {
+contract EnvironmentUtil is DeploymentUtil, Constants {
 
     IDeployment.VaultFactoryConf public vaultFactoryConf;
 
@@ -31,6 +31,6 @@ contract Environment is Deployment, Constants {
         uint256 chainlinkStaleRateThreshold
     ) private {
         vm.label(weth, "WETH");
-        vaultFactoryConf = deployRelease(weth, ethUsdAggregator, chainlinkStaleRateThreshold);
+        vaultFactoryConf = deployRelease(weth, ethUsdAggregator, chainlinkStaleRateThreshold,true);
     }
 }

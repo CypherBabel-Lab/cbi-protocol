@@ -2,24 +2,25 @@
 pragma solidity ^0.8.19;
 
 import { Script } from "forge-std/Script.sol";
+import { console } from "forge-std/console.sol";
 import { IVaultFactory } from "../src/vault-factory/IVaultFactory.sol";
 import { IValueEvaluator } from "./interfaces/IValueEvaluator.sol";
 import { ChainlinkPriceFeedMixin } from "../src/price-feeds/primitives/ChainlinkPriceFeedMixin.sol";
 
-address constant WNATIVE_TOKEN = 0x60Cd78c3edE4d891455ceAeCfA97EECD819209cF;
+address constant WNATIVE_TOKEN = 0xf283c304b29c94385C01e77ef5E08160419D5760;
 uint256 constant CHAINLINK_STALE_RATE_THRESHOLD = 365 * 5 days;
 
-address constant WNATIVE_TOKEN_USD_AGGREGATOR = 0xC874f389A3F49C5331490145f77c4eFE202d72E1;
+address constant WNATIVE_TOKEN_USD_AGGREGATOR = 0x229690c70c1Ef1DE9a66CeDd2cC0ae4fA845Ed9a;
 
 // address primitive asset
-address constant WBTC = 0x4492081335788Dc2967c65f24772375e30C06fE3;
-address constant BTC_USD_AGGREGATOR = 0x4b0687ce6eC3Fe6c019467c744D0C563643BdFa4;
-address constant WETH = 0x10ea44f6a33107d2F9d2273d1C2F87aab271D214;
-address constant ETH_USD_AGGREGATOR = 0xAEc43Fc8D4684b6A6577c3B18A1c1c6d3D55C28E;
-address constant WSOL = 0x26b475D34Adf60d1d6F35c79029C087E1e749140;
-address constant SOL_ETH_AGGREGATOR = 0x3C39209e85c1a27f1B992Bcf3416f5fC84764F2e;
-address constant DAI = 0x7D026BCAb767F364EbFE5527c2EbD960dd495A8C;
-address constant DAI_USD_AGGREGATOR = 0xdE2aA055F8DA4d2a4A5063b8736C8455AEa8aB3F;
+address constant WBTC = 0x45485D89523721228dE3d032E92C15Ef2cC2fFe2;
+address constant BTC_USD_AGGREGATOR = 0xd021Acf06a8f62F00242b7B51871c6136f5DD4eD;
+address constant WETH = 0xBdA17499006dCBa50DF3A38101Ff0D42Dd4f5C52;
+address constant ETH_USD_AGGREGATOR = 0xF6Ce9b321855FCA4CeAe6248B30eDBb605844266;
+address constant WSOL = 0xBAAAC3CE2b6EBb5C5721866478c10F8E88DBfFFB;
+address constant SOL_ETH_AGGREGATOR = 0x176278b95758559fca527052f4BD2E853248b7c6;
+address constant DAI = 0x8D61BdC8891A66dFF842ae7F0f68D4a2c4c04Dd1;
+address constant DAI_USD_AGGREGATOR = 0x229690c70c1Ef1DE9a66CeDd2cC0ae4fA845Ed9a;
 
 enum ChainlinkRateAsset {
     ETH,
@@ -37,9 +38,13 @@ contract VaultFactoryDeploy is Script {
         address vaultLogicAddress = deployCode("VaultLogic.sol");
         address beaconVaultLogicAddress = deployCode("Beacon.sol",abi.encode(vaultLogicAddress));
         address vaultFactoryAddress = deployCode("VaultFactory.sol",abi.encode(beaconGuardianLogicAddress,beaconVaultLogicAddress));
+        console.log("vaultFactoryAddress",vaultFactoryAddress);
         address vauleEvaluatorAddress = deployCode("ValueEvaluator.sol", abi.encode(vaultFactoryAddress, WNATIVE_TOKEN, CHAINLINK_STALE_RATE_THRESHOLD));
+        console.log("vauleEvaluatorAddress",vauleEvaluatorAddress);
         address integrationManagerAddress = deployCode("IntegrationManager.sol", abi.encode(vaultFactoryAddress, vauleEvaluatorAddress));
+        console.log("integrationManagerAddress",integrationManagerAddress);
         address globalSharedAddress = deployCode("GlobalShared.sol", abi.encode(vaultFactoryAddress, integrationManagerAddress, vauleEvaluatorAddress, WNATIVE_TOKEN));
+        console.log("globalSharedAddress",globalSharedAddress);
         // set vault factory global shared
         IVaultFactory(vaultFactoryAddress).setGlobalShared(globalSharedAddress);
         // active vault factory

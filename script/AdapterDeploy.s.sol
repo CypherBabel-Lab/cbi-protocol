@@ -2,13 +2,14 @@
 pragma solidity ^0.8.19;
 
 import { Script } from "forge-std/Script.sol";
+import { console } from "forge-std/console.sol";
 
 // integrationManagerAddress (from VaultFactoryDeploy)
-address constant IntergrationManagerAddress = 0x79841BFF57F826aB6F1AE8dBC68a564375AA878F;
+address constant IntergrationManagerAddress = 0xe9Af0A430134E6648F636b3F08f67336eF14cF85;
 
 //uniswap v2
-address constant UNISWAP_V2_FACTORY = 0x79841BFF57F826aB6F1AE8dBC68a564375AA878F;
-address constant UNISWAP_V2_ROUTER_02 = 0xB1C4C22FeE13DA89E8D983227d9dc6314E29894a;
+address constant UNISWAP_V2_FACTORY = 0xaF4c3cB96c011Bd123a5aeB7C8eaf5E17f5Ca080;
+address constant UNISWAP_V2_ROUTER_02 = 0xC0FcE24e33DB355e21d63eb91Fd35D8F65D0A1DE;
 
 
 contract AdapterDeploy is Script {
@@ -19,7 +20,9 @@ contract AdapterDeploy is Script {
         vm.startBroadcast(deployerPrivateKey);
         // deploy uniswap v2 adapter
         address adapterUniV2ExchangeAddress = deployCode("UniswapV2ExchangeAdapter.sol", abi.encode(IntergrationManagerAddress, UNISWAP_V2_ROUTER_02));
+        console.log("adapterUniV2ExchangeAddress",adapterUniV2ExchangeAddress);
         address adapterUniV2LPAddress = deployCode("UniswapV2LiquidityAdapter.sol", abi.encode(IntergrationManagerAddress, UNISWAP_V2_ROUTER_02, UNISWAP_V2_FACTORY));
+        console.log("adapterUniV2LPAddress",adapterUniV2LPAddress);
         vm.stopBroadcast();
     }
 }
