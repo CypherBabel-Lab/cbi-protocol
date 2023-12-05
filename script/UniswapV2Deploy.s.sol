@@ -8,7 +8,7 @@ import { UniswapV2Factory } from "uniswapv2/src/UniswapV2Factory.sol";
 import { UniswapV2Router02 } from "uniswapv2/src/UniswapV2Router02.sol";
 
 
-// need change init code in uniswapv2/src/libraries/UniswapV2Library.sol
+// need change init code in uniswapv2/src/libraries/UniswapV2Library.sol(https://emn178.github.io/online-tools/keccak_256.html)
 contract UniswapV2Deploy is Script {
     function setUp() public{}
 
