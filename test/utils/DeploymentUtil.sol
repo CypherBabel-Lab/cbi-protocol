@@ -5,6 +5,8 @@ import { Test } from "forge-std/Test.sol";
 import { IVaultFactory } from "../interfaces/IVaultFactory.sol";
 import { IValueEvaluator } from "../interfaces/IValueEvaluator.sol";
 import { IDeployment } from "../interfaces/IDeployment.sol";
+import { MyERC20 } from "../../src/utils/MyERC20.sol";
+import { MockV3Aggregator } from "chainlink-mock/src/MockV3Aggregator.sol";
 
 
 abstract contract DeploymentUtil is Test {
@@ -25,6 +27,7 @@ abstract contract DeploymentUtil is Test {
         }
         IValueEvaluator(vauleEvaluatorAddress).setEthUsdAggregator(ethUsdAggregator);
         conf = IDeployment.VaultFactoryConf({
+            owner: msg.sender,
             weth: weth,
             globalShared: globalSharedAddress,
             ethUsdAggregator: ethUsdAggregator,
@@ -68,5 +71,17 @@ abstract contract DeploymentUtil is Test {
     function deployGlobalShared(address vaultFactoryAddress, address integrationManagerAddress, address vauleEvaluatorAddress, address wethToken) internal returns (address globalShared) {
         address globalSharedAddress = deployCode("GlobalShared.sol", abi.encode(vaultFactoryAddress, integrationManagerAddress, vauleEvaluatorAddress, wethToken));
         return globalSharedAddress;
+    }
+
+    function deployMockAggregator(uint256 price) internal returns (address aggregator) {
+        aggregator = deployCode("MockV3Aggregator.sol",abi.encode(8, price * 10**8));
+    }
+
+    function deployTestERC20Token() internal returns (address token) {
+        token = deployCode("MyERC20.sol",abi.encode("TestToken", "TEST"));
+    }
+
+    function deployTestERC20Token(string memory name, string memory symbol) internal returns (address token) {
+        token = deployCode("MyERC20.sol",abi.encode(name, symbol));
     }
 }

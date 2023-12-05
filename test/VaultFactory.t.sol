@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.8.19;
 
-import { Test } from "forge-std/Test.sol";
 import { IVaultFactory } from "./interfaces/IVaultFactory.sol";
+import { IDeployment } from "./interfaces/IDeployment.sol";
+import { IValueEvaluator } from "./interfaces/IValueEvaluator.sol";
+import { IGuardianLogic } from "./interfaces/IGuardianLogic.sol";
+import { IVaultLogic } from "./interfaces/IVaultLogic.sol";
+import { DeploymentUtil } from "./utils/DeploymentUtil.sol";
 
-contract VaultFactory is Test {
+contract VaultFactoryTest is DeploymentUtil {
     function setUp() public {
     }
 
@@ -34,5 +38,23 @@ contract VaultFactory is Test {
         vm.expectRevert("contract is not yet activate");
         vm.prank(fundCreator);
         IVaultFactory(vaultFactoryAddress).createNewVault("testVault", "TEST_VAULT", address(0), 0);
+    }
+
+    function testCreateNewFundWithActivated() public {
+        
+        address mockChainlink = deployMockAggregator(38000);
+        IDeployment.VaultFactoryConf memory vaultFactoryConf = deployRelease(makeAddr("weth"), mockChainlink, 0, true);
+        address fundCreator = makeAddr("fundCreator");
+        vm.prank(fundCreator);
+        (address guardianProxyAddress, address vaultProxyAddress) = vaultFactoryConf.vaultFactory.createNewVault("testVault", "TEST_VAULT", makeAddr("denominationAsset"), 10);
+        // check vault
+        assertEq(IVaultLogic(vaultProxyAddress).getAccessor(), guardianProxyAddress);
+        assertEq(IVaultLogic(vaultProxyAddress).getTrackedAssets()[0], makeAddr("denominationAsset"));
+        assertEq(IVaultLogic(vaultProxyAddress).getCreator(), address(vaultFactoryConf.vaultFactory));
+        assertEq(IVaultLogic(vaultProxyAddress).getOwner(), fundCreator);
+
+        // check guardian
+        assertEq(IGuardianLogic(guardianProxyAddress).getVaultProxy(), vaultProxyAddress);
+        assertEq(IGuardianLogic(guardianProxyAddress).getDenominationAsset(), makeAddr("denominationAsset"));
     }
 }

@@ -6,6 +6,7 @@ import { IValueEvaluator } from "./IValueEvaluator.sol";
 
 interface IDeployment {
     struct VaultFactoryConf {
+        address owner;
         address weth;
         address globalShared;
         address ethUsdAggregator;

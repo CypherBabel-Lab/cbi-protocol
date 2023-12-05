@@ -10,16 +10,16 @@ contract EnvironmentUtil is DeploymentUtil, Constants {
 
     IDeployment.VaultFactoryConf public vaultFactoryConf;
 
-    function setUp() public {
+    function setUp() public virtual {
         setUpMainnetEnvironment();
     }
 
     function setUpMainnetEnvironment() internal {
-        string memory MAINNET_RPC_URL = vm.envString("MAINNET_RPC_URL");
+        string memory MAINNET_RPC_URL = vm.envString("ETHEREUM_NODE_MAINNET");
         vm.createSelectFork(MAINNET_RPC_URL);
         setUpEnvironment(
-            ETHEREUM_WETH,
-            ETHEREUM_ETH_USD_AGGREGATOR,
+            ETHEREUM_WNATIVE_TOKEN,
+            ETHEREUM_WNATIVE_TOKEN_USD_AGGREGATOR,
             CHAINLINK_STALE_RATE_THRESHOLD
         );
 
@@ -31,6 +31,10 @@ contract EnvironmentUtil is DeploymentUtil, Constants {
         uint256 chainlinkStaleRateThreshold
     ) private {
         vm.label(weth, "WETH");
+        address owner = makeAddr("vaultfactoryowner_fork");
+        vm.startPrank(owner);
         vaultFactoryConf = deployRelease(weth, ethUsdAggregator, chainlinkStaleRateThreshold,true);
+        vaultFactoryConf.owner = owner;
+        vm.stopPrank();
     }
 }

@@ -18,7 +18,7 @@ interface IValueEvaluator {
         returns (uint256 value_);
     function getAggregatorForPrimitive(address _primitive) external view returns (address aggregator_);
     function getEthUsdAggregator() external view returns (address ethUsdAggregator_);
-    function getFundDeployer() external view returns (address fundDeployer_);
+    function getVaultFactory() external view returns (address fundDeployer_);
     function getOwner() external view returns (address owner_);
     function getPriceFeedForDerivative(address _derivative) external view returns (address priceFeed_);
     function getRateAssetForPrimitive(address _primitive) external view returns (uint8 rateAsset_);
