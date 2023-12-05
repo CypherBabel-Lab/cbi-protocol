@@ -11,7 +11,7 @@ import { IUniswapV2Router2 } from "../src/external-interfaces/IUniswapV2Router2.
 import { MockV3Aggregator } from "chainlink-mock/src/MockV3Aggregator.sol";
 
 // uniswap v2 router 02 address
-address constant UNISWAP_V2_ROUTER_02 = 0xC0FcE24e33DB355e21d63eb91Fd35D8F65D0A1DE;
+address constant UNISWAP_V2_ROUTER_02 = 0x722f41d377caf139619ab365A27da1018a74901e;
 
 contract EnvironmentDeploy is Script {
 
@@ -25,7 +25,7 @@ contract EnvironmentDeploy is Script {
 
      function run() public {
         vm.startBroadcast(deployerPrivateKey);
-        // 部署erc20
+        // deploy erc20
         address erc20WBTCAddress = deployERC20("wbtc", "WBTC");
         console.log("erc20WBTCAddress",erc20WBTCAddress);
         address erc20WETHAddress = deployERC20("weth", "WETH");
@@ -34,7 +34,7 @@ contract EnvironmentDeploy is Script {
         console.log("erc20WSOLAddress",erc20WSOLAddress);
         address erc20DAIAddress = deployERC20("dai", "DAI");
         console.log("erc20DAIAddress",erc20DAIAddress);
-        // 部署对应的chainlink mock
+        // deploy chainlink mock
         address btcUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 38000 * 10**8));
         console.log("btcUsdAggregatorAddress",btcUsdAggregatorAddress);
         address ethUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 3000 * 10**8));
@@ -43,7 +43,7 @@ contract EnvironmentDeploy is Script {
         console.log("solEthAggregatorAddress",solEthAggregatorAddress);
         address daiUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 1 * 10**8));
         console.log("daiUsdAggregatorAddress",daiUsdAggregatorAddress);
-        // 部署源生token的chainlink mock
+        // deploy native token's chainlink mock
          address wNativeTokenUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 100 * 10**8));
          console.log("wNativeTokenUsdAggregatorAddress",wNativeTokenUsdAggregatorAddress);
         // carete pair

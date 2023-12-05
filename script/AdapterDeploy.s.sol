@@ -5,11 +5,11 @@ import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 
 // integrationManagerAddress (from VaultFactoryDeploy)
-address constant IntergrationManagerAddress = 0xe9Af0A430134E6648F636b3F08f67336eF14cF85;
+address constant IntergrationManagerAddress = 0x8F025faeF26c649e5D093677dFf7dfC023e78f31;
 
 //uniswap v2
-address constant UNISWAP_V2_FACTORY = 0xaF4c3cB96c011Bd123a5aeB7C8eaf5E17f5Ca080;
-address constant UNISWAP_V2_ROUTER_02 = 0xC0FcE24e33DB355e21d63eb91Fd35D8F65D0A1DE;
+address constant UNISWAP_V2_FACTORY = 0xc871b0b1c10F40059512F2DA2cD37255e6a9ae54;
+address constant UNISWAP_V2_ROUTER_02 = 0x722f41d377caf139619ab365A27da1018a74901e;
 
 
 contract AdapterDeploy is Script {

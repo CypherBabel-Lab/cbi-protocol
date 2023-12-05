@@ -7,20 +7,20 @@ import { IVaultFactory } from "../src/vault-factory/IVaultFactory.sol";
 import { IValueEvaluator } from "./interfaces/IValueEvaluator.sol";
 import { ChainlinkPriceFeedMixin } from "../src/price-feeds/primitives/ChainlinkPriceFeedMixin.sol";
 
-address constant WNATIVE_TOKEN = 0xf283c304b29c94385C01e77ef5E08160419D5760;
+address constant WNATIVE_TOKEN = 0xfDaF44799BA8fa3DC6af978ea142B7101c17CDD9;
 uint256 constant CHAINLINK_STALE_RATE_THRESHOLD = 365 * 5 days;
 
-address constant WNATIVE_TOKEN_USD_AGGREGATOR = 0x229690c70c1Ef1DE9a66CeDd2cC0ae4fA845Ed9a;
+address constant WNATIVE_TOKEN_USD_AGGREGATOR = 0xC0FcE24e33DB355e21d63eb91Fd35D8F65D0A1DE;
 
 // address primitive asset
-address constant WBTC = 0x45485D89523721228dE3d032E92C15Ef2cC2fFe2;
-address constant BTC_USD_AGGREGATOR = 0xd021Acf06a8f62F00242b7B51871c6136f5DD4eD;
-address constant WETH = 0xBdA17499006dCBa50DF3A38101Ff0D42Dd4f5C52;
-address constant ETH_USD_AGGREGATOR = 0xF6Ce9b321855FCA4CeAe6248B30eDBb605844266;
-address constant WSOL = 0xBAAAC3CE2b6EBb5C5721866478c10F8E88DBfFFB;
-address constant SOL_ETH_AGGREGATOR = 0x176278b95758559fca527052f4BD2E853248b7c6;
-address constant DAI = 0x8D61BdC8891A66dFF842ae7F0f68D4a2c4c04Dd1;
-address constant DAI_USD_AGGREGATOR = 0x229690c70c1Ef1DE9a66CeDd2cC0ae4fA845Ed9a;
+address constant WBTC = 0x9aF7D95036e2516E2c3149b79A8992345d56F80B;
+address constant BTC_USD_AGGREGATOR = 0x5CA4db2bB728b0d6285A9C83d43F7503Dca12e92;
+address constant WETH = 0x83Ff9c342388e77eE480Ffa262A5a0E52536fFcc;
+address constant ETH_USD_AGGREGATOR = 0x46BAFFad74F525f5D3eaCE0e7D94A3A74a224eFa;
+address constant WSOL = 0x73aaB0aef913eA76d5EA81c61BC31fe76023cC4f;
+address constant SOL_ETH_AGGREGATOR = 0xf283c304b29c94385C01e77ef5E08160419D5760;
+address constant DAI = 0xEBeB6B2744469111dBA0e5B0C7FBdC88c1427544;
+address constant DAI_USD_AGGREGATOR = 0xaF4c3cB96c011Bd123a5aeB7C8eaf5E17f5Ca080;
 
 enum ChainlinkRateAsset {
     ETH,
