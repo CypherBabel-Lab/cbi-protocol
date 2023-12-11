@@ -40,7 +40,7 @@ contract EnvironmentDeploy is Script {
         address ethUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 3000 * 10**8));
         console.log("ethUsdAggregatorAddress",ethUsdAggregatorAddress);
         address solEthAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 60 * 10**8));
-        console.log("solEthAggregatorAddress",solEthAggregatorAddress);
+        console.log("solUsdAggregatorAddress",solEthAggregatorAddress);
         address daiUsdAggregatorAddress = deployCode("MockV3Aggregator.sol",abi.encode(8, 1 * 10**8));
         console.log("daiUsdAggregatorAddress",daiUsdAggregatorAddress);
         // deploy native token's chainlink mock
